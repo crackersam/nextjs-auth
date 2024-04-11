@@ -3,6 +3,8 @@ import User from "@/models/User";
 import { NextRequest, NextResponse } from "next/server";
 import bcryptjs from "bcryptjs";
 import jwt from "jsonwebtoken";
+import { setCookie } from "cookies-next";
+import { cookies } from "next/headers";
 
 connect();
 
@@ -47,14 +49,15 @@ export async function POST(request) {
       { expiresIn: "1d" }
     );
 
-    const response = NextResponse.json({
-      message: "Login successful",
-      success: true,
-    });
+    const response = new NextResponse();
 
-    response.cookies.set("token", token, {
-      httpOnly: true,
-    });
+    cookies().set(
+      "token",
+      token,
+
+      { httpOnly: true }
+    );
+
     return response;
   } catch (error) {
     return NextResponse.json(

@@ -1,4 +1,3 @@
-import { NextURL } from "next/dist/server/web/next-url";
 import { NextResponse } from "next/server";
 
 // This function can be marked `async` if using `await` inside
@@ -11,6 +10,8 @@ export function middleware(request) {
     path === "/verify-email";
 
   const token = request.cookies.get("token")?.value || "";
+
+  request.token = token;
 
   if (isPublicPath && token) {
     return NextResponse.redirect(
